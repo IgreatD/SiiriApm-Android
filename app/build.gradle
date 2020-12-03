@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+apply from: "../common_component_build.gradle"
+
+def debugProperties = new Properties()
+debugProperties.load(new FileInputStream(rootProject.file("debug.properties")))
+
+def release172Properties = new Properties()
+release172Properties.load(new FileInputStream(rootProject.file("release172.properties")))
+
+def release117Properties = new Properties()
+release117Properties.load(new FileInputStream(rootProject.file("release117.properties")))
+
+def release60Properties = new Properties()
+release60Properties.load(new FileInputStream(rootProject.file("release60.properties")))
+
+static def buildTime() {
+    def date = new Date()
+    def formatDate = date.format("yyyyMMddHHmmss")
+    return formatDate
+}
+
+android {
+    defaultConfig {
+        applicationId "com.sippr.agileprojectmanagement"
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: 'com.sippr.agileprojectmanagement',
+                JPUSH_APPKEY : "f1ab93fa5a8778e2f784da7f",//值来自开发者平台取得的AppKey
+                JPUSH_CHANNEL: "default_developer",
+        ]
+        multiDexEnabled = true
+        flavorDimensions "default"
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+    }
+
+    productFlavors {
+
+        "117.158.214.190" {
+            buildConfigField "String", "WEBVIEW_URL", release117Properties['webViewUrl']
+            buildConfigField "String", "API_DOMAIN", release117Properties['apiDomain']
+        }
+
+        "172.16.40.24" {
+            buildConfigField "String", "WEBVIEW_URL", release172Properties['webViewUrl']
+            buildConfigField "String", "API_DOMAIN", release172Properties['apiDomain']
+        }
+
+        "60.6.241.64" {
+            buildConfigField "String", "WEBVIEW_URL", release60Properties['webViewUrl']
+            buildConfigField "String", "API_DOMAIN", release60Properties['apiDomain']
+        }
+    }
+
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "String", "WEBVIEW_URL", debugProperties['webViewUrl']
+            buildConfigField "String", "API_DOMAIN", debugProperties['apiDomain']
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (!variant.buildType.isDebuggable()) {
+                def name = "工程在线"
+                def version = "版本__${variant.versionCode}"
+                def flavor = "渠道__${variant.flavorName}"
+                def time = "打包时间__${buildTime()}"
+                def typeName = buildType.name
+                outputFileName = "${name}-${version}-${flavor}-${time}_${typeName}.apk"
+            }
+        }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+        abortOnError false
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+        preDexLibraries = false
+        additionalParameters = [
+                '--multi-dex',
+                '--set-max-idx-number=48000'
+        ]
+    }
+}
+
+dependencies {
+    implementation project(":lib_push")
+    implementation project(':lib_fingerprint')
+    implementation project(':lib_update')
+    implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
+    implementation 'com.just.agentweb:agentweb-androidx:4.1.4' // (必选)
+    implementation 'com.just.agentweb:filechooser-androidx:4.1.4'// (可选)
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'com.github.tbruyelle:rxpermissions:0.12'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
+}

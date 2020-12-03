@@ -1,0 +1,5 @@
+/build
+/60
+/stage
+*.json
+*.apk

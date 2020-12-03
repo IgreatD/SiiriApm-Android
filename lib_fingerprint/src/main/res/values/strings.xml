@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_info_title">项目在线 指纹审批</string>
+    <string name="prompt_info_subtitle">请通过指纹识别审批</string>
+    <string name="prompt_info_description">通过 指纹建 验证手机指纹审批</string>
+    <string name="prompt_info_use_app_password">使用手机验证码审批</string>
+    <string name="secret_key_name">biometric_encryption_key</string>
+</resources>

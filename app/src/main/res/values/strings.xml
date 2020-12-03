@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">工程在线</string>
+    <string name="menu_title_msg">消息</string>
+    <string name="menu_title_address">通讯录</string>
+    <string name="menu_title_workbench">工作台</string>
+    <string name="menu_title_mine">我</string>
+    <string name="exit_app">再按一次退出程序</string>
+</resources>

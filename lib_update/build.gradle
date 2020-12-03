@@ -1,0 +1,14 @@
+apply plugin: 'com.android.library'
+apply from: "../common_component_build.gradle"
+
+android {
+    androidExtensions {
+        experimental = true
+    }
+
+}
+
+dependencies {
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+    implementation 'com.liulishuo.filedownloader:library:1.7.7'
+}

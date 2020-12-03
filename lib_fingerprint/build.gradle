@@ -1,0 +1,10 @@
+apply plugin: 'com.android.library'
+apply from: "../common_component_build.gradle"
+
+android {
+
+}
+
+dependencies {
+    implementation "androidx.biometric:biometric:1.0.1"
+}

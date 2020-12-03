@@ -1,0 +1,11 @@
+apply plugin: 'com.android.library'
+apply from: "../common_component_build.gradle"
+
+android {
+
+}
+
+dependencies {
+    api 'cn.jiguang.sdk:jpush:3.7.0'  // 此处以JPush 3.7.0 版本为例。
+    api 'cn.jiguang.sdk:jcore:2.4.2'  // 此处以JCore 2.4.2 版本为例。
+}
